@@ -1,5 +1,8 @@
 use assert_cmd::Command;
-use predicates::prelude::{self, *};
+use predicates::{
+    boolean::NotPredicate,
+    prelude::{self, *},
+};
 
 // This type alias holds either a Unit `()`
 // or a Box with something in it that implements Error.
@@ -34,4 +37,15 @@ fn does_not_print_flags() {
         .assert()
         .success()
         .stdout(predicates::str::contains("first second"));
+}
+
+#[test]
+fn dash_n_does_not_print_newline() {
+    Command::cargo_bin("echor")
+        .unwrap()
+        .args(["first", "-n", "second"])
+        .assert()
+        .success()
+        .stdout(predicates::str::contains("first second"))
+        .stdout(predicates::str::contains("second\n").not());
 }

@@ -5,5 +5,9 @@ fn main() {
 
     args.remove(0);
 
-    println!("{}", args.join(" "));
+    if std::env::args().len() > args.len() + 1 {
+        print!("{}", args.join(" "));
+    } else {
+        println!("{}", args.join(" "));
+    }
 }
