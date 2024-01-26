@@ -1,4 +1,9 @@
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    println!("{}", args[1]);
+    let mut args: Vec<String> = std::env::args()
+        .filter(|arg| !arg.starts_with("-"))
+        .collect();
+
+    args.remove(0);
+
+    println!("{}", args.join(" "));
 }
