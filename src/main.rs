@@ -11,10 +11,6 @@ struct Args {
     ///Do not print newline
     #[arg(short('n'))]
     omit_newline: bool,
-
-    ///Backwards compatability for ignore flags test
-    #[arg(long("flag"))]
-    ignore_flags: bool,
 }
 
 fn main() {

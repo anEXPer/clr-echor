@@ -1,8 +1,5 @@
 use assert_cmd::Command;
-use predicates::{
-    boolean::NotPredicate,
-    prelude::{self, *},
-};
+use predicates::prelude::*;
 
 // This type alias holds either a Unit `()`
 // or a Box with something in it that implements Error.
@@ -27,16 +24,6 @@ fn echos_three_args() {
         .assert()
         .success()
         .stdout("first arg second! 3\n");
-}
-
-#[test]
-fn does_not_print_flags() {
-    Command::cargo_bin("echor")
-        .unwrap()
-        .args(["first", "--flag", "second"])
-        .assert()
-        .success()
-        .stdout(predicates::str::contains("first second"));
 }
 
 #[test]
