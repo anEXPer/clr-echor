@@ -1,6 +1,8 @@
+#![warn(clippy::all, clippy::pedantic)]
+
 fn main() {
     let mut args: Vec<String> = std::env::args()
-        .filter(|arg| !arg.starts_with("-"))
+        .filter(|arg| !arg.starts_with('-'))
         .collect();
 
     args.remove(0);
