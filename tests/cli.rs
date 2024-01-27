@@ -7,6 +7,15 @@ use predicates::prelude::*;
 // type TestResult = Result<(), Box<dyn std::error::Error>>;
 
 #[test]
+fn when_no_args_it_prints_usage_dies() {
+    Command::cargo_bin("echor")
+        .unwrap()
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("Usage:"));
+}
+
+#[test]
 fn echos_one_arg() {
     Command::cargo_bin("echor")
         .unwrap()
