@@ -16,6 +16,18 @@ fn when_no_args_it_prints_usage_dies() {
 }
 
 #[test]
+fn dash_h_gives_help() {
+    Command::cargo_bin("echor")
+        .unwrap()
+        .arg("-h")
+        .assert()
+        .success()
+        .stdout(predicates::str::contains(
+            "A Rust version of `echo` written as practice",
+        ));
+}
+
+#[test]
 fn echos_one_arg() {
     Command::cargo_bin("echor")
         .unwrap()
