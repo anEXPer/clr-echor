@@ -1,3 +1,6 @@
+use std::fs;
+
+use anyhow;
 use assert_cmd::Command;
 use predicates::prelude::*;
 
@@ -56,4 +59,16 @@ fn dash_n_does_not_print_newline() {
         .success()
         .stdout(predicates::str::contains("first second"))
         .stdout(predicates::str::contains("second\n").not());
+}
+
+// Adding tests here using the fixture method from the book
+
+#[test]
+fn hello1() -> anyhow::Result<()> {
+    let expected = fs::read_to_string("tests/expected/hello1.txt")?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.arg("Hello there").assert().success().stdout(expected);
+
+    Ok(())
 }
