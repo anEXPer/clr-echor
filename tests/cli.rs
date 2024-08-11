@@ -4,10 +4,8 @@ use anyhow;
 use assert_cmd::Command;
 use predicates::prelude::*;
 
-// This type alias holds either a Unit `()`
-// or a Box with something in it that implements Error.
-// This does not yet totally make sense to me.
-// type TestResult = Result<(), Box<dyn std::error::Error>>;
+// this set of tests uses naive/unwrap error handling with assertions,
+// which is vulnerable to panics.
 
 #[test]
 fn when_no_args_it_prints_usage_dies() {
@@ -62,13 +60,33 @@ fn dash_n_does_not_print_newline() {
 }
 
 // Adding tests here using the fixture method from the book
+// These tests also use `?` instead of unwrap,
+// Passing a result up to the caller of the test functions to handle.
 
+// This version is from the 2024 revision
+// It uses anyhow for the returned result.
 #[test]
 fn hello1() -> anyhow::Result<()> {
     let expected = fs::read_to_string("tests/expected/hello1.txt")?;
     let mut cmd = Command::cargo_bin("echor")?;
 
     cmd.arg("Hello there").assert().success().stdout(expected);
+    Ok(())
+}
 
+// Let's try the version from the original
+// which builds a type alias for itself.
+
+// This type alias holds either a Unit `()`
+// or a Box with something in it that implements Error.
+// This appears to be functionally equivalent to the anyhow Result type above.
+type TestResult = Result<(), Box<dyn std::error::Error>>;
+
+#[test]
+fn hello1o() -> TestResult {
+    let expected = fs::read_to_string("tests/expected/hello1.txt")?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.arg("Hello there").assert().success().stdout(expected);
     Ok(())
 }
