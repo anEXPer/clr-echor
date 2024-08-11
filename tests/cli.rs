@@ -2,7 +2,7 @@
 use std::{fs, str};
 
 use anyhow;
-use assert_cmd::{cargo::CommandCargoExt, Command};
+use assert_cmd::Command;
 use predicates::prelude::*;
 
 // this set of tests uses naive/unwrap error handling with assertions,
