@@ -73,7 +73,10 @@ fn hello1() -> anyhow::Result<()> {
     let expected = fs::read_to_string("tests/expected/hello1.txt")?;
     let mut cmd = Command::cargo_bin("echor")?;
 
-    cmd.arg("Hello there").assert().success().stdout(expected);
+    cmd.args(&["Hello there"])
+        .assert()
+        .success()
+        .stdout(expected);
     Ok(())
 }
 
