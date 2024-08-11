@@ -6,6 +6,8 @@ use predicates::prelude::*;
 
 // this set of tests uses naive/unwrap error handling with assertions,
 // which is vulnerable to panics.
+// Ordindarily, I might refactor these to use one of the later patterns,
+// but I'm going to leave them this way because I like the comparison.
 
 #[test]
 fn when_no_args_it_prints_usage_dies() {
@@ -65,12 +67,49 @@ fn dash_n_does_not_print_newline() {
 
 // This version is from the 2024 revision
 // It uses anyhow for the returned result.
+// We're going to do the rest of the fixture tests from the book this way.
 #[test]
 fn hello1() -> anyhow::Result<()> {
     let expected = fs::read_to_string("tests/expected/hello1.txt")?;
     let mut cmd = Command::cargo_bin("echor")?;
 
     cmd.arg("Hello there").assert().success().stdout(expected);
+    Ok(())
+}
+
+#[test]
+fn hello2() -> anyhow::Result<()> {
+    let expected = fs::read_to_string("tests/expected/hello2.txt")?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.args(&["Hello", "there"])
+        .assert()
+        .success()
+        .stdout(expected);
+    Ok(())
+}
+
+#[test]
+fn hello1n() -> anyhow::Result<()> {
+    let expected = fs::read_to_string("tests/expected/hello1.n.txt")?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.args(&["Hello there", "-n"])
+        .assert()
+        .success()
+        .stdout(expected);
+    Ok(())
+}
+
+#[test]
+fn hello2n() -> anyhow::Result<()> {
+    let expected = fs::read_to_string("tests/expected/hello2.n.txt")?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.args(&["Hello", "there", "-n"])
+        .assert()
+        .success()
+        .stdout(expected);
     Ok(())
 }
 
