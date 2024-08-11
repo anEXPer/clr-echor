@@ -71,54 +71,18 @@ fn dash_n_does_not_print_newline() {
 // We're going to do the rest of the fixture tests from the book this way.
 #[test]
 fn hello1() -> anyhow::Result<()> {
-    let expected = fs::read_to_string("tests/expected/hello1.txt")?;
-    let mut cmd = Command::cargo_bin("echor")?;
-
-    cmd.args(&["Hello there"])
-        .assert()
-        .success()
-        .stdout(expected);
-    Ok(())
+    run_against_fixture(&["Hello there"], "tests/expected/hello1.txt")
 }
-
 #[test]
 fn hello2() -> anyhow::Result<()> {
-    let expected = fs::read_to_string("tests/expected/hello2.txt")?;
-    let mut cmd = Command::cargo_bin("echor")?;
-
-    cmd.args(&["Hello", "there"])
-        .assert()
-        .success()
-        .stdout(expected);
-    Ok(())
+    run_against_fixture(&["Hello", "there"], "tests/expected/hello2.txt")
 }
-
 #[test]
 fn hello1n() -> anyhow::Result<()> {
-    let expected = fs::read_to_string("tests/expected/hello1.n.txt")?;
-    let mut cmd = Command::cargo_bin("echor")?;
-
-    cmd.args(&["Hello there", "-n"])
-        .assert()
-        .success()
-        .stdout(expected);
-    Ok(())
+    run_against_fixture(&["Hello there", "-n"], "tests/expected/hello1.n.txt")
 }
-
 #[test]
 fn hello2n() -> anyhow::Result<()> {
-    let expected = fs::read_to_string("tests/expected/hello2.n.txt")?;
-    let mut cmd = Command::cargo_bin("echor")?;
-
-    cmd.args(&["Hello", "there", "-n"])
-        .assert()
-        .success()
-        .stdout(expected);
-    Ok(())
-}
-
-#[test]
-fn hello2na() -> anyhow::Result<()> {
     run_against_fixture(&["Hello", "there", "-n"], "tests/expected/hello2.n.txt")
 }
 
