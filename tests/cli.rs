@@ -1,7 +1,8 @@
-use std::fs;
+#![warn(clippy::all, clippy::pedantic)]
+use std::{fs, str};
 
 use anyhow;
-use assert_cmd::Command;
+use assert_cmd::{cargo::CommandCargoExt, Command};
 use predicates::prelude::*;
 
 // this set of tests uses naive/unwrap error handling with assertions,
@@ -113,6 +114,19 @@ fn hello2n() -> anyhow::Result<()> {
         .assert()
         .success()
         .stdout(expected);
+    Ok(())
+}
+
+#[test]
+fn hello2na() -> anyhow::Result<()> {
+    run_against_fixture(&["Hello", "there", "-n"], "tests/expected/hello2.n.txt")
+}
+
+fn run_against_fixture(arg_array: &[&str], fixture_path: &str) -> anyhow::Result<()> {
+    let expected = fs::read_to_string(fixture_path)?;
+    let mut cmd = Command::cargo_bin("echor")?;
+
+    cmd.args(arg_array).assert().success().stdout(expected);
     Ok(())
 }
 
